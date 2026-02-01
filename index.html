@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Circle Draw App</title>
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background:#f4f6f9;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.container{
+  width:600px;
+  background:white;
+  padding:25px;
+  border-radius:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+
+button{
+  background:linear-gradient(45deg,#3b82f6,#2563eb);
+  color:white;
+  border:none;
+  padding:12px 25px;
+  border-radius:12px;
+  font-size:18px;
+  cursor:pointer;
+}
+
+.canvas{
+  margin-top:20px;
+  height:350px;
+  border:2px dashed #ccc;
+  border-radius:15px;
+  position:relative;
+  overflow:hidden;
+}
+
+.circle{
+  width:16px;
+  height:16px;
+  background:#3b82f6;
+  border-radius:50%;
+  position:absolute;
+}
+
+.count{
+  text-align:center;
+  margin-top:15px;
+  font-size:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <button onclick="undoCircle()">Undo</button>
+
+  <div class="canvas" id="canvas"></div>
+
+  <div class="count">
+    Circles drawn: <span id="count">0</span>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById("canvas");
+const countText = document.getElementById("count");
+
+let circles = [];
+
+canvas.addEventListener("click", (e) => {
+  const rect = canvas.getBoundingClientRect();
+
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  const circle = document.createElement("div");
+  circle.classList.add("circle");
+
+  circle.style.left = x + "px";
+  circle.style.top = y + "px";
+
+  canvas.appendChild(circle);
+  circles.push(circle);
+
+  updateCount();
+});
+
+function undoCircle(){
+  if(circles.length > 0){
+    const last = circles.pop();
+    last.remove();
+    updateCount();
+  }
+}
+
+function updateCount(){
+  countText.textContent = circles.length;
+}
+</script>
+
+</body>
+</html>
